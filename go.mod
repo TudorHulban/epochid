@@ -1,4 +1,4 @@
-module linuxid
+module github.com/TudorHulban/epochid
 
 go 1.18
 
