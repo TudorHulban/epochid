@@ -1,4 +1,4 @@
-package linuxid
+package epochid
 
 import (
 	"testing"
