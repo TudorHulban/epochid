@@ -1,4 +1,4 @@
-# Container ID
+# Epoch ID
 ## Unicity among containers
 What should be the minimum for creating an ID that would have chances of being unique among containers?   
 And what is important within a distributed system for an ID?  
@@ -13,7 +13,7 @@ Why not process ID? Due to the fact that a container should only run one process
 
 ## Implementation - Epoch time
 A value up to a 1/10 of a second was chosen for good precision.  
-So `1654589015` is seconds, length is 10 digits. Our ID would use with 11 digits.  
+So `1654589015` is seconds, length is 10 digits. Our ID would use 11 digits.  
 This gives us another 9 positions.
 
 ## Implementation - Container ID
