@@ -67,3 +67,7 @@ func main() {
 	fmt.Println(res)
 }
 ```
+## Resources
+```html
+https://www.sobyte.net/post/2022-01/go-snowflakeid/
+```
