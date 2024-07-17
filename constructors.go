@@ -4,62 +4,28 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
-	"sync"
 	"time"
 )
 
-var _containerID string
-var _sequenceID int64
-
-func getContainerID() string {
-	if len(_containerID) == 0 {
-		id, err := readContainerID()
-		if err != nil {
-			return ""
-		}
-
-		_containerID = pickNumbersFrom(id, 5)
-	}
-
-	return _containerID
-}
-
-func getSequenceID() string {
-	var mu sync.Mutex
-	var id int64
-
-	mu.Lock()
-	id = _sequenceID
-
-	_sequenceID++
-
-	if _sequenceID == 10000 {
-		_sequenceID = 0
-	}
-
-	mu.Unlock()
-
-	res := "000" + strconv.FormatInt(id, 10)
-
-	return res[len(res)-4:]
-}
-
 func NewIDRandom() (uint64, error) {
-	containerID := getContainerID()
+	containerID := getContainerID(5)
 	if len(containerID) == 0 {
-		return 0, errors.New("there was an error")
+		return 0,
+			errors.New("there was an error")
 	}
 
 	now := strconv.FormatInt(time.Now().UnixNano(), 10)
 
 	random, errRa := randInt()
 	if errRa != nil {
-		return 0, fmt.Errorf("NewID strconv.ParseUint: %w", errRa)
+		return 0,
+			fmt.Errorf("NewIDRandom strconv.ParseUint: %w", errRa)
 	}
 
-	parsed, errPa := strconv.ParseUint((now[:11] + containerID + random + now[16:19])[:20], 10, 64)
-	if errPa != nil {
-		return 0, fmt.Errorf("NewID strconv.ParseUint: %w", errPa)
+	parsed, errParse := strconv.ParseUint((now[:11] + containerID + random + now[16:19])[:20], 10, 64)
+	if errParse != nil {
+		return 0,
+			fmt.Errorf("NewIDRandom strconv.ParseUint: %w", errParse)
 	}
 
 	return parsed, nil
@@ -67,7 +33,7 @@ func NewIDRandom() (uint64, error) {
 
 // NewIDIncremental10K provides a sequence in the last 4 digits.
 func NewIDIncremental10K() (uint64, error) {
-	containerID := getContainerID()
+	containerID := getContainerID(5)
 	if len(containerID) == 0 {
 		return 0, errors.New("there was an error")
 	}
@@ -82,11 +48,11 @@ func NewIDIncremental10K() (uint64, error) {
 	return parsed, nil
 }
 
-// NewIDIncremental10KWCoCorrection provides correction in case container ID cannot be fetched.
+// NewIDIncremental10KWConCorrection provides correction in case container ID cannot be fetched.
 // Ignores parse error when converting to uint for a faster result.
 // Provides a sequence in the last 4 digits.
-func NewIDIncremental10KWCoCorrection() uint64 {
-	containerID := getContainerID()
+func NewIDIncremental10KWConCorrection() uint64 {
+	containerID := getContainerID(5)
 
 	now := strconv.FormatInt(time.Now().UnixNano(), 10)
 

@@ -2,8 +2,8 @@ package epochid
 
 import "testing"
 
-// cpu: AMD Ryzen 5 5600U with Radeon Graphics
-// BenchmarkConstructor-12    	 1896780	       794.5 ns/op	      71 B/op	       3 allocs/op
+// cpu: AMD Ryzen 7 5800H with Radeon Graphics
+// BenchmarkNewIDRandom-16    	 2829472	       409.6 ns/op	      39 B/op	       2 allocs/op
 func BenchmarkNewIDRandom(b *testing.B) {
 	b.ResetTimer()
 
@@ -12,8 +12,8 @@ func BenchmarkNewIDRandom(b *testing.B) {
 	}
 }
 
-// cpu: AMD Ryzen 5 5600U with Radeon Graphics
-// BenchmarkConstructor-12    	 4363184	       349.8 ns/op	      71 B/op	       4 allocs/op
+// cpu: AMD Ryzen 7 5800H with Radeon Graphics
+// BenchmarkNewIDIncremental-16    	 6870781	       175.3 ns/op	      47 B/op	       3 allocs/op
 func BenchmarkNewIDIncremental(b *testing.B) {
 	b.ResetTimer()
 
@@ -23,11 +23,21 @@ func BenchmarkNewIDIncremental(b *testing.B) {
 }
 
 // cpu: AMD Ryzen 7 5800H with Radeon Graphics
-// BenchmarkNewIDIncrementalWCorrection-16    	 3401972	       386.4 ns/op	      71 B/op	       4 allocs/op
+// BenchmarkNewIDIncrementalWCorrection-16    	 6857497	       174.5 ns/op	      47 B/op	       3 allocs/op
 func BenchmarkNewIDIncrementalWCorrection(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		NewIDIncremental10KWCoCorrection()
+		NewIDIncremental10KWConCorrection()
+	}
+}
+
+// cpu: AMD Ryzen 7 5800H with Radeon Graphics
+// BenchmarkNewIDSimple-16    	 6545791	       179.5 ns/op	      47 B/op	       3 allocs/op
+func BenchmarkNewIDSimple(b *testing.B) {
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		NewIDIncrementalWConCorrection()
 	}
 }

@@ -9,9 +9,9 @@ import (
 )
 
 func TestHowToUse(t *testing.T) {
-	now := time.Now().Unix()
-	id := epochid.NewIDIncremental10KWCoCorrection()
+	nowSeconds := time.Now().Unix()
+	id := epochid.NewIDIncremental10KWConCorrection()
 
-	fmt.Println("prefix:", now)
+	fmt.Println("prefix:", nowSeconds)
 	fmt.Println("ID (has prefix):", id)
 }

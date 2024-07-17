@@ -1,6 +1,7 @@
 package epochid
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -38,4 +39,15 @@ func TestSequenceReset(t *testing.T) {
 	}
 
 	require.Equal(t, "0000", getSequenceID())
+}
+
+func TestGetContainerID(t *testing.T) {
+	fmt.Println(
+		t.Name(),
+		getContainerID(5),
+	)
+	fmt.Println(
+		t.Name(),
+		getContainerID(5),
+	)
 }
