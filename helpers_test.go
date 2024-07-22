@@ -46,6 +46,7 @@ func TestGetContainerID(t *testing.T) {
 		t.Name(),
 		getContainerID(5),
 	)
+
 	fmt.Println(
 		t.Name(),
 		getContainerID(5),

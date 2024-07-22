@@ -11,7 +11,7 @@ func NewIDRandom() (uint64, error) {
 	containerID := getContainerID(5)
 	if len(containerID) == 0 {
 		return 0,
-			errors.New("there was an error")
+			errors.New("could not get container ID")
 	}
 
 	now := strconv.FormatInt(time.Now().UnixNano(), 10)
@@ -35,14 +35,16 @@ func NewIDRandom() (uint64, error) {
 func NewIDIncremental10K() (uint64, error) {
 	containerID := getContainerID(5)
 	if len(containerID) == 0 {
-		return 0, errors.New("there was an error")
+		return 0,
+			errors.New("could not get container ID")
 	}
 
 	now := strconv.FormatInt(time.Now().UnixNano(), 10)
 
 	parsed, errPa := strconv.ParseUint((now[:11] + containerID + getSequenceID()), 10, 64)
 	if errPa != nil {
-		return 0, fmt.Errorf("NewID strconv.ParseUint: %w", errPa)
+		return 0,
+			fmt.Errorf("NewID strconv.ParseUint: %w", errPa)
 	}
 
 	return parsed, nil

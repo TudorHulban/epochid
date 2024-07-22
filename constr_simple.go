@@ -31,7 +31,7 @@ func NewEpochID() EpochID {
 // Errors ignored for faster result.
 func (e EpochID) GetUnixTimeSeconds() int64 {
 	result, _ := strconv.ParseInt(
-		strconv.FormatInt(int64(e), 10)[:11],
+		strconv.FormatInt(int64(e), 10)[:10],
 		10,
 		64,
 	)

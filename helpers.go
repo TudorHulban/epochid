@@ -49,12 +49,13 @@ func randInt() (string, error) {
 
 	if _, err := rand.Reader.Read(buf); err != nil {
 		return "",
-			fmt.Errorf("generate random number: %W;", err)
+			fmt.Errorf("generate random number: %w;", err)
 	}
 
 	res := uint32(buf[0])<<16 | uint32(buf[1])<<8 | uint32(buf[2])
 
-	return strconv.Itoa(int(res)), nil
+	return strconv.Itoa(int(res)),
+		nil
 }
 
 // readMachineID returns machine ID
