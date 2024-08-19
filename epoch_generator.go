@@ -29,7 +29,7 @@ func (gen *EpochGenerator) GetValue() EpochID {
 		return EpochID(parsed)
 	}
 
-	parsed, _ := strconv.ParseInt((now + gen.hostID + getSequenceID()), 10, 64)
+	parsed, _ := strconv.ParseInt((now + getSequenceID() + gen.hostID), 10, 64)
 
 	return EpochID(parsed)
 }

@@ -2,6 +2,7 @@ package epochid_test
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
 	"time"
 
@@ -9,12 +10,15 @@ import (
 )
 
 func TestHowToUse(t *testing.T) {
-	nowSeconds := time.Now().Unix()
+	now := time.Now().UnixNano()
 
 	generator := epochid.NewEpochGenerator()
 
 	id := generator.GetValue()
 
-	fmt.Println("prefix:", nowSeconds)
+	fmt.Println(
+		"prefix:",
+		strconv.FormatInt(now, 10)[:11],
+	)
 	fmt.Println("ID (has prefix):", id)
 }
