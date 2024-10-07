@@ -19,6 +19,9 @@ func TestSimpleNewID(t *testing.T) {
 	fmt.Println(
 		time.Unix(id.GetUnixTimeSeconds(), 0),
 	)
+
+	fmt.Println(id)
+	fmt.Println(id.UUIDFormat())
 }
 
 func TestStringerSimpleNewID(t *testing.T) {
