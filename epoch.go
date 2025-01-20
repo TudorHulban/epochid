@@ -6,6 +6,25 @@ import (
 
 type EpochID int64
 
+func NewEpochID(item string) (EpochID, error) {
+	var result EpochID
+
+	if errValidation := validationString(
+		&paramsValidationString{
+			Caller: "NewEpochID",
+			Name:   "item",
+			Value:  item,
+		},
+		&result,
+	); errValidation != nil {
+		return 0,
+			errValidation
+	}
+
+	return result,
+		nil
+}
+
 // Errors ignored for faster result.
 func (e EpochID) GetUnixTimeSeconds() int64 {
 	result, _ := strconv.ParseInt(

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestSimpleNewID(t *testing.T) {
@@ -35,4 +37,12 @@ func TestStringerSimpleNewID(t *testing.T) {
 	id := NewEpochGenerator().GetValue()
 
 	p(id)
+}
+
+func TestErrorsNewEpochID(t *testing.T) {
+	stringValue := "173736407930000218"
+
+	epochValue, errCr := NewEpochID(stringValue)
+	require.Error(t, errCr)
+	require.Zero(t, epochValue)
 }
