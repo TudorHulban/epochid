@@ -7,13 +7,12 @@ import (
 	"time"
 )
 
-const _precomputedSize = 256
-
-var _sequenceID atomic.Int64
+const _sequenceLimit = 10000
 
 type EpochGenerator struct {
 	hostID         string
-	precomputedIDs [_precomputedSize]string
+	precomputedIDs [_sequenceLimit]string // from 0000 to 9999
+	sequenceID     atomic.Int64
 }
 
 // NewEpochGenerator provides correction in case container ID
@@ -32,10 +31,11 @@ func NewEpochGenerator() *EpochGenerator {
 }
 
 func (gen *EpochGenerator) initializePrecomputedIDs() {
-	for i := 0; i < _precomputedSize; i++ {
+	for i := 0; i < _sequenceLimit; i++ {
 		gen.precomputedIDs[i] = strings.Repeat(
 			"0",
-			4-len(strconv.FormatInt(int64(i), 10))) + strconv.FormatInt(int64(i), 10)
+			4-len(strconv.FormatInt(int64(i), 10))) +
+			strconv.FormatInt(int64(i), 10)
 	}
 }
 
@@ -54,19 +54,13 @@ func (gen *EpochGenerator) GetValue() EpochID {
 }
 
 func (gen *EpochGenerator) getSequenceID() string {
-	current := _sequenceID.Add(1)
-
-	if current < _precomputedSize {
-		return gen.precomputedIDs[current-1]
-	}
-
-	if current == 10000 {
-		_sequenceID.Store(0)
+	if gen.sequenceID.Load() == _sequenceLimit {
+		gen.sequenceID.Store(1)
 
 		return gen.precomputedIDs[0]
 	}
 
-	s := strconv.FormatInt(current-1, 10)
+	current := gen.sequenceID.Add(1)
 
-	return strings.Repeat("0", 4-len(s)) + s
+	return gen.precomputedIDs[current-1]
 }
