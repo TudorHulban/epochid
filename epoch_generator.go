@@ -42,6 +42,7 @@ func (gen *EpochGenerator) initializePrecomputedIDs() {
 func (gen *EpochGenerator) GetValue() EpochID {
 	now := strconv.FormatInt(time.Now().UnixNano(), 10)[:11]
 
+	// strings.Builder gave worse performance.
 	if len(gen.hostID) == 0 {
 		parsed, _ := strconv.ParseInt((now + gen.getSequenceID()), 10, 64)
 
@@ -54,10 +55,8 @@ func (gen *EpochGenerator) GetValue() EpochID {
 }
 
 func (gen *EpochGenerator) getSequenceID() string {
-	if gen.sequenceID.Load() == _sequenceLimit {
-		gen.sequenceID.Store(1)
-
-		return gen.precomputedIDs[0]
+	if gen.sequenceID.Load() >= _sequenceLimit-1 {
+		gen.sequenceID.CompareAndSwap(_sequenceLimit-1, 0) // Ensures only one reset
 	}
 
 	return gen.precomputedIDs[gen.sequenceID.Add(1)-1]

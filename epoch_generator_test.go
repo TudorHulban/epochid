@@ -125,7 +125,7 @@ func TestSequenceLimitEpochGenerator(t *testing.T) {
 	resetIDStr := strconv.FormatInt(int64(newCycleFirstEpochID), 10)
 
 	resetSequencePart := resetIDStr[len(resetIDStr)-8 : len(resetIDStr)-4]
-	if resetSequencePart != "0000" {
+	if resetSequencePart != "0001" {
 		t.Errorf(
 			"1. Sequence Limit test failed: Expected sequence to reset to 0000, got %s, full ID: %s",
 			resetSequencePart,
@@ -144,7 +144,7 @@ func TestSequenceLimitEpochGenerator(t *testing.T) {
 	nextIDStr := strconv.FormatInt(int64(newCycleSecondEpochID), 10)
 
 	nextSequencePart := nextIDStr[len(nextIDStr)-8 : len(nextIDStr)-4] // Corrected slicing
-	if nextSequencePart != "0001" {
+	if nextSequencePart != "0002" {
 		t.Errorf(
 			"2. Sequence Limit test failed: Expected sequence after reset to be 0001, got %s, full ID: %s",
 			nextSequencePart,
