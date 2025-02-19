@@ -60,7 +60,5 @@ func (gen *EpochGenerator) getSequenceID() string {
 		return gen.precomputedIDs[0]
 	}
 
-	current := gen.sequenceID.Add(1)
-
-	return gen.precomputedIDs[current-1]
+	return gen.precomputedIDs[gen.sequenceID.Add(1)-1]
 }
