@@ -24,10 +24,10 @@ func readHostID() (string, error) {
 	return string(idHardware), nil
 }
 
-func getHostID(length uint) int64 {
+func getHostID(length uint) string {
 	id, errHostID := readHostID()
 	if errHostID != nil {
-		return 0
+		return ""
 	}
 
 	return pickNumbersFrom(id, length)

@@ -22,7 +22,7 @@ type EpochGenerator struct {
 // Provides a sequence in the last 4 digits.
 func NewEpochGenerator() *EpochGenerator {
 	result := EpochGenerator{
-		hostID: strconv.Itoa(int(getHostID(4))),
+		hostID: getHostID(4),
 	}
 
 	result.initializePrecomputedIDs()
@@ -39,25 +39,22 @@ func (gen *EpochGenerator) initializePrecomputedIDs() {
 	}
 }
 
-func (gen *EpochGenerator) GetValue() EpochID {
-	now := strconv.FormatInt(time.Now().UnixNano(), 10)[:11]
-
-	// strings.Builder gave worse performance.
-	if len(gen.hostID) == 0 {
-		parsed, _ := strconv.ParseInt((now + gen.getSequenceID()), 10, 64)
-
-		return EpochID(parsed)
-	}
-
-	parsed, _ := strconv.ParseInt((now + gen.getSequenceID() + gen.hostID), 10, 64)
-
-	return EpochID(parsed)
-}
-
 func (gen *EpochGenerator) getSequenceID() string {
 	if gen.sequenceID.Load() >= _sequenceLimit-1 {
 		gen.sequenceID.CompareAndSwap(_sequenceLimit-1, 0) // Ensures only one reset
 	}
 
 	return gen.precomputedIDs[gen.sequenceID.Add(1)-1]
+}
+
+func (gen *EpochGenerator) GetValue() EpochID {
+	parsed, _ := strconv.
+		ParseInt(
+			(strconv.FormatInt(time.Now().UnixNano(), 10)[:11] +
+				gen.getSequenceID() + gen.hostID),
+			10,
+			64,
+		)
+
+	return EpochID(parsed)
 }

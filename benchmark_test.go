@@ -15,7 +15,7 @@ import (
 // alma linux - balanced
 // with all values precomputed
 // cpu: AMD Ryzen 7 5800H with Radeon Graphics
-// BenchmarkNewIDSimple-16    	 9781618	       118.4 ns/op	      24 B/op	       1 allocs/op
+// BenchmarkNewIDSimple-16    	10265635	       115.8 ns/op	      24 B/op	       1 allocs/op
 func BenchmarkNewIDSimple(b *testing.B) {
 	generator := NewEpochGenerator()
 
