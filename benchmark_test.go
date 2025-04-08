@@ -4,15 +4,11 @@ import (
 	"testing"
 )
 
-// ubuntu - performance
+// ubuntu
 // cpu: AMD Ryzen 7 5800H with Radeon Graphics
 // BenchmarkNewIDSimple-16    	 6545791	       179.5 ns/op	      47 B/op	       3 allocs/op
 
-// rocky - balanced
-// cpu: AMD Ryzen 7 5800H with Radeon Graphics
-// BenchmarkNewIDSimple-16    	 4493860	       725.5 ns/op	      39 B/op	       2 allocs/op
-
-// alma linux - balanced
+// alma linux
 // with all values precomputed
 // cpu: AMD Ryzen 7 5800H with Radeon Graphics
 // BenchmarkNewIDSimple-16    	10265635	       115.8 ns/op	      24 B/op	       1 allocs/op

@@ -6,12 +6,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestPickNumbersFrom(t *testing.T) {
+func TestHash(t *testing.T) {
 	from1 := "a12b3"
 
 	require.EqualValues(t,
-		"321",
-		pickNumbersFrom(
+		"190",
+		hash(
 			from1,
 			3,
 		),
@@ -21,8 +21,8 @@ func TestPickNumbersFrom(t *testing.T) {
 	from2 := "abc"
 
 	require.EqualValues(t,
-		"000",
-		pickNumbersFrom(
+		"298",
+		hash(
 			from2,
 			3,
 		),
@@ -32,8 +32,8 @@ func TestPickNumbersFrom(t *testing.T) {
 	from3 := ""
 
 	require.EqualValues(t,
-		"000",
-		pickNumbersFrom(
+		"364",
+		hash(
 			from3,
 			3,
 		),
@@ -58,7 +58,7 @@ func BenchmarkPickNumbers(b *testing.B) {
 			input.input,
 			func(b *testing.B) {
 				for i := 0; i < b.N; i++ {
-					pickNumbersFrom(
+					hash(
 						input.input,
 						input.howMany,
 					)

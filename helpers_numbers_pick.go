@@ -1,26 +1,37 @@
 package epochid
 
-import "strings"
+import (
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+	"strconv"
+)
 
-func pickNumbersFrom(text string, howMany uint) string {
-	var digitsFound uint
-	var result strings.Builder
+func hash(text string, howMany uint) string {
+	hasher := sha256.New()
 
-	for i := len(text) - 1; i >= 0 && digitsFound < howMany; i-- {
-		b := text[i]
+	hasher.Write([]byte(text))
+	hashBytes := hasher.Sum(nil)
 
-		if b >= '0' && b <= '9' {
-			result.WriteByte(b)
+	hashString := hex.EncodeToString(hashBytes)
 
-			digitsFound++
-		}
+	if howMany > uint(len(hashString)) {
+		howMany = uint(len(hashString))
 	}
 
-	for digitsFound < howMany {
-		result.WriteByte('0')
-
-		digitsFound++
+	numericHash, errParse := strconv.ParseUint(
+		hashString[:howMany],
+		16,
+		64,
+	)
+	if errParse != nil {
+		return ""
 	}
 
-	return result.String()
+	result := fmt.Sprintf("%d", numericHash)
+	if len(result) > int(howMany) && howMany > 0 {
+		return result[:howMany]
+	}
+
+	return result
 }

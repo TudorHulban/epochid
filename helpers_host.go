@@ -5,8 +5,7 @@ import (
 	"os"
 )
 
-// readHostID returns machine ID
-func readHostID() (string, error) {
+func readContainerID() (string, error) {
 	idHardware, errID := os.ReadFile("/etc/machine-id")
 	if errID != nil || len(idHardware) == 0 {
 		hostname, errHo := os.Hostname()
@@ -25,10 +24,10 @@ func readHostID() (string, error) {
 }
 
 func getHostID(length uint) string {
-	id, errHostID := readHostID()
+	id, errHostID := readContainerID()
 	if errHostID != nil {
 		return ""
 	}
 
-	return pickNumbersFrom(id, length)
+	return hash(id, length)
 }

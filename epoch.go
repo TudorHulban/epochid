@@ -36,7 +36,6 @@ func (e EpochID) GetUnixTimeSeconds() int64 {
 	return result
 }
 
-// Stringer.
 func (e EpochID) String() string {
 	return strconv.FormatInt(
 		int64(e),
