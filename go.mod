@@ -3,7 +3,7 @@ module github.com/TudorHulban/epochid
 go 1.24
 
 require (
-	github.com/TudorHulban/go-errors v0.0.0-20250120122431-ebcaff063799
+	github.com/TudorHulban/go-errors v0.0.0-20250513130253-80d5fda2c08b
 	github.com/stretchr/testify v1.10.0
 )
 

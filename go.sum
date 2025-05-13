@@ -1,5 +1,5 @@
-github.com/TudorHulban/go-errors v0.0.0-20250120122431-ebcaff063799 h1:FLwzOKR1+sQ4bajmxD1scJcbUYamFk57BBc9qf5YCw0=
-github.com/TudorHulban/go-errors v0.0.0-20250120122431-ebcaff063799/go.mod h1:Kgp2ZdTO/L3PJfPam/hyxyreBb1wy+nXCe0+9Xw/M2A=
+github.com/TudorHulban/go-errors v0.0.0-20250513130253-80d5fda2c08b h1:8guhTNW86ASU1cRHZqCRzd7YmdM0ljIAnxY9B1pYX1c=
+github.com/TudorHulban/go-errors v0.0.0-20250513130253-80d5fda2c08b/go.mod h1:qvQZ/acYbqlKiEFR3hzHFWlAIGXi9mcelK6ofHDspm8=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
