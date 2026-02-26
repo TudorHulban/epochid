@@ -1,5 +1,7 @@
 package epochid
 
+import "slices"
+
 type Epochs []EpochID
 
 func (e Epochs) AsString() []string {
@@ -14,11 +16,8 @@ func (e Epochs) AsString() []string {
 
 // Contains would come handy in tests.
 func (e Epochs) Contains(item int) bool {
-	for _, epoch := range e {
-		if epoch == EpochID(item) {
-			return true
-		}
-	}
-
-	return false
+	return slices.Contains(
+		e,
+		EpochID(item),
+	)
 }

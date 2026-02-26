@@ -3,7 +3,6 @@ package epochid
 import (
 	"crypto/sha256"
 	"encoding/hex"
-	"fmt"
 	"strconv"
 )
 
@@ -28,7 +27,8 @@ func hash(text string, howMany uint) string {
 		return ""
 	}
 
-	result := fmt.Sprintf("%d", numericHash)
+	result := strconv.FormatUint(numericHash, 10)
+
 	if len(result) > int(howMany) && howMany > 0 {
 		return result[:howMany]
 	}
