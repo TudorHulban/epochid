@@ -31,7 +31,7 @@ func NewEpochGenerator() *EpochGenerator {
 }
 
 func (gen *EpochGenerator) initializePrecomputedIDs() {
-	for i := 0; i < _sequenceLimit; i++ {
+	for i := range _sequenceLimit {
 		gen.precomputedIDs[i] = strings.Repeat(
 			"0",
 			4-len(strconv.FormatInt(int64(i), 10))) +

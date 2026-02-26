@@ -1,6 +1,6 @@
 module github.com/TudorHulban/epochid
 
-go 1.23.2
+go 1.26
 
 require (
 	github.com/TudorHulban/go-errors v0.0.0-20250120122431-ebcaff063799

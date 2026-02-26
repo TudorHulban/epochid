@@ -36,13 +36,15 @@ func TestConcurrentGenerator(t *testing.T) {
 
 	size := 3
 
-	var wg sync.WaitGroup
-	var mu sync.Mutex
-	var sequenceParts []string
+	var (
+		wg            sync.WaitGroup
+		mu            sync.Mutex
+		sequenceParts []string
+	)
 
 	wg.Add(size)
 
-	for ix := 0; ix < size; ix++ {
+	for range size {
 		go func() {
 			epochID := generator.GetValue()
 
@@ -51,7 +53,7 @@ func TestConcurrentGenerator(t *testing.T) {
 			sequencePart := idStr[len(idStr)-8 : len(idStr)-4]
 
 			mu.Lock()
-			sequenceParts = append(sequenceParts, sequencePart)
+			sequenceParts = append(sequenceParts, sequencePart) //nolint:wsl_v5
 			mu.Unlock()
 
 			fmt.Println(
@@ -76,18 +78,20 @@ func TestConcurrentGenerator(t *testing.T) {
 func TestNotConcurrentGenerator(t *testing.T) {
 	t.Log(t.Name())
 
-	var sequenceParts []string
+	upTo := 5
+
+	sequenceParts := make([]string, upTo)
 
 	generator := NewEpochGenerator()
 
-	for range 5 {
+	for ix := range upTo {
 		epochID := generator.GetValue()
 
 		idStr := strconv.FormatInt(int64(epochID), 10)
 
 		sequencePart := idStr[len(idStr)-8 : len(idStr)-4]
 
-		sequenceParts = append(sequenceParts, sequencePart)
+		sequenceParts[ix] = sequencePart
 	}
 
 	expected := []string{"0000", "0001", "0002", "0003", "0004"}
@@ -104,7 +108,7 @@ func TestSequenceLimitEpochGenerator(t *testing.T) {
 	generator := NewEpochGenerator()
 
 	// Consume a cycle of values.
-	for i := 0; i < 9999; i++ {
+	for range 9999 {
 		generator.GetValue()
 	}
 
@@ -158,7 +162,7 @@ func TestEpochGeneratorOverall(t *testing.T) {
 
 	generator := NewEpochGenerator()
 
-	for i := 0; i < 5; i++ { // Test a few overall IDs
+	for range 5 { // Test a few overall IDs
 		epochID := generator.GetValue()
 
 		idStr := strconv.FormatInt(int64(epochID), 10)
