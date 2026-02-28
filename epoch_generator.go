@@ -40,11 +40,25 @@ func (gen *EpochGenerator) initializePrecomputedIDs() {
 }
 
 func (gen *EpochGenerator) getSequenceID() string {
-	if gen.sequenceID.Load() >= _sequenceLimit-1 {
-		gen.sequenceID.CompareAndSwap(_sequenceLimit-1, 0) // Ensures only one reset
-	}
+	// standard lock-free CAS loop pattern that
+	// eliminates the time-of-check to time-of-use (TOCTOU) gap entirely.
 
-	return gen.precomputedIDs[gen.sequenceID.Add(1)-1]
+	// Only one goroutine can successfully transition from current to next.
+	// All other goroutines observing the same current will fail CAS and retry.
+	// Rollover (next = 0) is validated inside the CAS, not after a separate increment.
+	// No goroutine can ever increment past _sequenceLimit-1 because the CAS enforces the transition.
+	for {
+		current := gen.sequenceID.Load()
+
+		next := current + 1
+		if next >= _sequenceLimit {
+			next = 0
+		}
+
+		if gen.sequenceID.CompareAndSwap(current, next) {
+			return gen.precomputedIDs[next]
+		}
+	}
 }
 
 func (gen *EpochGenerator) GetValue() EpochID {

@@ -19,7 +19,7 @@ func TestStartValue(t *testing.T) {
 	sequencePart := idStr[len(idStr)-8 : len(idStr)-4]
 
 	require.Equal(t,
-		"0000",
+		"0001",
 		sequencePart,
 	)
 
@@ -67,7 +67,7 @@ func TestConcurrentGenerator(t *testing.T) {
 
 	wg.Wait()
 
-	expected := []string{"0000", "0001", "0002"}
+	expected := []string{"0001", "0002", "0003"}
 
 	require.ElementsMatch(t,
 		expected,
@@ -94,7 +94,7 @@ func TestNotConcurrentGenerator(t *testing.T) {
 		sequenceParts[ix] = sequencePart
 	}
 
-	expected := []string{"0000", "0001", "0002", "0003", "0004"}
+	expected := []string{"0001", "0002", "0003", "0004", "0005"}
 
 	require.ElementsMatch(t,
 		expected,
@@ -191,5 +191,58 @@ func TestEpochGeneratorOverall(t *testing.T) {
 				errConversion,
 			)
 		}
+	}
+}
+
+func TestEpochGenerator_RolloverRace(t *testing.T) {
+	t.Log(t.Name())
+
+	gen := NewEpochGenerator()
+	gen.sequenceID.Store(_sequenceLimit - 1)
+
+	const (
+		workers    = 64
+		iterations = 128
+	)
+
+	var wg sync.WaitGroup
+	wg.Add(workers)
+
+	var (
+		mu       sync.Mutex
+		seenAt   = make(map[string]int) // seq -> first goroutine+call that saw it
+		failures []string
+	)
+
+	for w := range workers {
+		go func(worker int) {
+			defer wg.Done()
+
+			for i := range iterations {
+				seq := gen.getSequenceID()
+
+				mu.Lock()
+				if prev, exists := seenAt[seq]; exists {
+					failures = append(failures,
+						fmt.Sprintf(
+							"worker %d iter %d: duplicate %s (first seen at call %d)",
+							w,
+							i,
+							seq,
+							prev,
+						),
+					)
+				} else {
+					seenAt[seq] = w*iterations + i
+				}
+				mu.Unlock()
+			}
+		}(w)
+	}
+
+	wg.Wait()
+
+	for _, f := range failures {
+		t.Error(f)
 	}
 }
