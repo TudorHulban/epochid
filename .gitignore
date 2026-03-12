@@ -1,2 +1,7 @@
-*.out
 .vscode
+.linting
+
+*.pprof
+*.pdf
+*.test
+*.out
