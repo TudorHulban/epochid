@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/TudorHulban/epochid"
 	"github.com/stretchr/testify/require"
+	"github.com/tudorhulban/epochid"
 )
 
 func TestHowToUse(t *testing.T) {
