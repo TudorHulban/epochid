@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	goerrors "github.com/TudorHulban/go-errors"
+	"github.com/tudorhulban/hxerrors"
 )
 
 type paramsValidationString struct {
@@ -16,10 +16,10 @@ type paramsValidationString struct {
 
 func validationString(params *paramsValidationString, result *EpochID) error {
 	if len(params.Value) != 19 {
-		return goerrors.ErrValidation{
+		return hxerrors.ErrValidation{
 			Caller: params.Caller,
 
-			Issue: goerrors.ErrInvalidInput{
+			Issue: hxerrors.ErrInvalidInput{
 				InputName: params.Name,
 			},
 		}
@@ -29,7 +29,7 @@ func validationString(params *paramsValidationString, result *EpochID) error {
 		strings.TrimSpace(params.Value),
 	)
 	if errConvToNumeric != nil {
-		return goerrors.ErrValidation{
+		return hxerrors.ErrValidation{
 			Caller: params.Caller,
 
 			Issue: fmt.Errorf(
@@ -41,20 +41,20 @@ func validationString(params *paramsValidationString, result *EpochID) error {
 	}
 
 	if numericValue < 0 {
-		return goerrors.ErrValidation{
+		return hxerrors.ErrValidation{
 			Caller: params.Caller,
 
-			Issue: goerrors.ErrNegativeInput{
+			Issue: hxerrors.ErrNegativeInput{
 				InputName: params.Name,
 			},
 		}
 	}
 
 	if numericValue == 0 {
-		return goerrors.ErrValidation{
+		return hxerrors.ErrValidation{
 			Caller: params.Caller,
 
-			Issue: goerrors.ErrZeroInput{
+			Issue: hxerrors.ErrZeroInput{
 				InputName: params.Name,
 			},
 		}
